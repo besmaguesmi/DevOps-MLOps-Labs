@@ -56,7 +56,7 @@ jobs:
     - name: Train model
       run: |
         cd session2/ml-app
-        python train.py
+        python src/train.py
 
     - name: Upload trained model
       uses: actions/upload-artifact@v4
