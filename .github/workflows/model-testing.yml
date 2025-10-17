@@ -16,13 +16,13 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.9'  # Fixed: Use supported version
 
     - name: Install dependencies
       run: |
         cd session2/ml-app
         python -m pip install --upgrade pip
-        pip install -r session2/ml-app/requirements.txt
+        pip install -r requirements.txt  # Fixed: Remove duplicate path
 
     - name: Train model and generate report
       run: |

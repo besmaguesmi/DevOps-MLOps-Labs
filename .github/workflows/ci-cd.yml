@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10]
+        python-version: ["3.8", "3.9", "3.10"]  # Fixed: Use supported versions
 
     steps:
     - name: Checkout code
@@ -24,20 +24,24 @@ jobs:
 
     - name: Install dependencies
       run: |
+        cd session2/ml-app
         python -m pip install --upgrade pip
-        pip install -r session2/ml-app/requirements.txt
+        pip install -r requirements.txt
 
     - name: Run tests with pytest
       run: |
-        python -m pytest ./session2/ml-app/tests/ -v
+        cd session2/ml-app
+        python -m pytest tests/ -v
 
     - name: Run code formatting check with black
       run: |
-        python -m black --check ./session2/ml-app/src/ ./session2/ml-app/tests/ ./session2/ml-app/train.py ./session2/ml-app/predict.py
+        cd session2/ml-app
+        python -m black --check src/ tests/ train.py predict.py
 
     - name: Run linting with flake8
       run: |
-        python -m flake8 ./session2/ml-app/src/ ./session2/ml-app/tests/ --max-line-length=88 --show-source
+        cd session2/ml-app
+        python -m flake8 src/ tests/ --max-line-length=88 --show-source
 
   train-model:
     runs-on: ubuntu-latest
@@ -51,22 +55,24 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.9'  # Fixed: Use quotes
 
     - name: Install dependencies
       run: |
+        cd session2/ml-app
         python -m pip install --upgrade pip
-        pip install -r ./session2/ml-app/requirements.txt
+        pip install -r requirements.txt
 
     - name: Train model
       run: |
-        python ./session2/ml-app/train.py
+        cd session2/ml-app
+        python train.py
 
     - name: Upload trained model
       uses: actions/upload-artifact@v4
       with:
         name: trained-model
-        path: ./session2/ml-app/models/
+        path: session2/ml-app/models/
         retention-days: 7
 
     - name: Upload evaluation plots
