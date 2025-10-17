@@ -20,11 +20,13 @@ jobs:
 
     - name: Install dependencies
       run: |
+        cd session2/ml-app
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r session2/ml-app/requirements.txt
 
     - name: Train model and generate report
       run: |
+        cd session2/ml-app
         python train.py
         echo "Model training completed at $(date)" >> training_report.md
         echo "## Training Results" >> training_report.md
@@ -32,10 +34,20 @@ jobs:
         echo "Dataset: Iris" >> training_report.md
         echo "Features: 4" >> training_report.md
         echo "Classes: 3" >> training_report.md
+        echo "Project Location: session2/ml-app/" >> training_report.md
 
     - name: Upload training report
       uses: actions/upload-artifact@v4
       with:
         name: training-report
-        path: training_report.md
+        path: session2/ml-app/training_report.md
+        retention-days: 30
+
+    - name: Upload model artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ml-artifacts
+        path: |
+          session2/ml-app/models/
+          session2/ml-app/*.png
         retention-days: 30

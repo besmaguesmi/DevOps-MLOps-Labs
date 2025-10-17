@@ -73,5 +73,20 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: evaluation-plots
-        path: *.png
+        path: session2/ml-app/*.png
         retention-days: 7
+
+  deploy-docs:
+    runs-on: ubuntu-latest
+    needs: train-model
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy documentation
+      run: |
+        echo "Documentation would be deployed here"
+        echo "ML App is located in: session2/ml-app/"
+        echo "Project structure is ready for deployment"
