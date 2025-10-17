@@ -1,0 +1,41 @@
+name: Model Testing
+
+on:
+  workflow_dispatch:  # Manual trigger
+  schedule:
+    - cron: '0 0 * * 0'  # Run weekly on Sunday
+
+jobs:
+  model-training-report:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Train model and generate report
+      run: |
+        python train.py
+        echo "Model training completed at $(date)" >> training_report.md
+        echo "## Training Results" >> training_report.md
+        echo "Model: Logistic Regression" >> training_report.md
+        echo "Dataset: Iris" >> training_report.md
+        echo "Features: 4" >> training_report.md
+        echo "Classes: 3" >> training_report.md
+
+    - name: Upload training report
+      uses: actions/upload-artifact@v4
+      with:
+        name: training-report
+        path: training_report.md
+        retention-days: 30
