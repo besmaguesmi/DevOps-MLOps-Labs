@@ -27,7 +27,7 @@ jobs:
     - name: Train model and generate report
       run: |
         cd session2/ml-app
-        python train.py
+        python src/train.py
         echo "Model training completed at $(date)" >> training_report.md
         echo "## Training Results" >> training_report.md
         echo "Model: Logistic Regression" >> training_report.md
