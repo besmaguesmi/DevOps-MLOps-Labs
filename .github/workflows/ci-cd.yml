@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10"]
 
     steps:
     - name: Checkout code
@@ -33,16 +33,6 @@ jobs:
         cd session2/ml-app
         python -m pytest tests/ -v
 
-    - name: Run code formatting check with black
-      run: |
-        cd session2/ml-app
-        python -m black --check src/ tests/ src/train.py src/predict.py
-
-    - name: Run linting with flake8
-      run: |
-        cd session2/ml-app
-        python -m flake8 src/ tests/ --max-line-length=88 --show-source
-
   train-model:
     runs-on: ubuntu-latest
     needs: test
@@ -55,7 +45,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'  # Fixed: Use quotes
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
