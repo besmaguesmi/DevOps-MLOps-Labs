@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="33a0a85b-e824-4ac3-a8d2-5f5abd444fef" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/.dvc/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/.dvc/config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/.dvcignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/.github/workflows/test.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/data.dvc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/dvc.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/dvc.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/src/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/src/cnn.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/src/config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/src/datasets.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/src/load_ckpts.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/src/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/src/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classification-pytorch-main/train.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="35Acp0HV7gszTKUyICI67LcjU2t" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/workspace/DevOps Courses/2025/DevOps-MLOps-Labs/session 3/classification-pytorch"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="33a0a85b-e824-4ac3-a8d2-5f5abd444fef" name="Changes" comment="" />
+      <created>1762556497196</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762556497196</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
