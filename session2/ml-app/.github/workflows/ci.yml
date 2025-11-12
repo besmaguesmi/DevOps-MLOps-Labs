@@ -1,0 +1,94 @@
+# This is a descriptive name for your workflow, which will show up in the GitHub "Actions" tab.
+name: CI Pipeline
+
+# These are the triggers for the workflow.
+# This workflow will run on every 'push' to any branch
+# and on every 'pull_request' to any branch.
+on:
+  push:
+  pull_request:
+
+# 'jobs' define the tasks that the workflow will run.
+# You can have multiple jobs, but for this assignment, one job is enough.
+jobs:
+  # We can name this job whatever we want. 'build-and-test' is descriptive.
+  build-and-test:
+    # This specifies the type of temporary computer (runner) to use.
+    # 'ubuntu-latest' is the most common and is a good default.
+    runs-on: ubuntu-latest
+
+    # 'steps' are the individual commands that make up the job, executed in order.
+    steps:
+      # --- Task 1: Checkout the code ---
+      # This step uses an official "action" (a pre-built script)
+      # to download your repository's code into the runner.
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # --- Task 2: Set up Python ---
+      # This step uses the official 'setup-python' action mentioned in your assignment.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          # You can change this to whatever version of Python your project needs.
+          python-version: '3.13.7'
+
+      # --- Task 3: Install dependencies ---
+      # This step runs shell commands ('run:').
+      # The '|' (pipe) lets us run multiple commands.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          # We need pytest to run tests and flake8 to lint.
+          # Make sure these are in your requirements.txt!
+          pip install pytest flake8
+
+      # --- Task 4: Run the linter ---
+      # This step runs the linter (I'm using flake8 as an example).
+      # It checks the 'src' and 'tests' directories for style issues.
+      - name: Run linter (flake8)
+        run: |
+          # The '--' tells flake8 to check all files in these folders.
+          flake8 --ignore E501 src tests
+
+      # --- Task 5: Run tests and produce test artifacts ---
+      - name: Run tests with pytest
+        run: |
+          # This runs pytest and tells it to create a test report in a standard 'JUnitXML' format.
+          # We'll upload this report in the next step.
+          pytest --junitxml=test-report.xml tests/
+
+      # This step uploads the test report we just created.
+      # It uses the official 'upload-artifact' action.
+      - name: Upload test report
+        # This 'if: always()' condition is important.
+        # It means this step will run EVEN IF the 'Run tests' step fails.
+        # This is good, because we want the report to see *why* the tests failed!
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          # This is the name the artifact will have in the GitHub UI.
+          name: test-report
+          # This is the file(s) to upload.
+          path: test-report.xml
+
+      # --- Task 6: Build Docker image and upload the image artifact ---
+      - name: Build Docker image
+        run: |
+          # This runs the 'docker build' command.
+          # '-t my-ml-app' gives the image a name (a "tag").
+          # '.' tells it to find the Dockerfile in the current directory.
+          docker build -t my-ml-app:latest .
+          
+          # This command saves the image we just built into a single .tar file.
+          docker save my-ml-app:latest -o image.tar
+
+      # This is the final step, uploading the Docker image .tar file.
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # The artifact will be named 'docker-image'
+          name: docker-image
+          # The file to upload is 'image.tar' which we created above.
+          path: image.tar
