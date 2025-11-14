@@ -25,20 +25,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          # We need pytest to run tests and flake8 to lint.
-          # Make sure these are in your requirements.txt!
           pip install pytest flake8
 
 
       - name: Run linter (flake8)
         run: |
-          # The '--' tells flake8 to check all files in these folders.
           flake8 --ignore E501 src tests
 
       - name: Run tests with pytest
         run: |
-          # This runs pytest and tells it to create a test report in a standard 'JUnitXML' format.
-          # We'll upload this report in the next step.
           pytest --junitxml=test-report.xml tests/
 
 
@@ -52,12 +47,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          # This runs the 'docker build' command.
-          # '-t my-ml-app' gives the image a name (a "tag").
-          # '.' tells it to find the Dockerfile in the current directory.
           docker build -t my-ml-app:latest .
           
-          # This command saves the image we just built into a single .tar file.
           docker save my-ml-app:latest -o image.tar
 
       - name: Upload Docker image artifact
