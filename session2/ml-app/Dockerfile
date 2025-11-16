@@ -1,21 +1,24 @@
-# Use official Python runtime as base image
-FROM python:3.9-slim
+# 1. Start with a lean Python base image
+# We use 3.10 to match our ci.yml file
+FROM python:3.10-slim
 
-# Set the working directory inside the container
+# 2. Set the working directory inside the container
 WORKDIR /app
 
-# Copy requirements
+# 3. Copy requirements and install them *first*
+# This is a best practice for Docker caching
 COPY requirements.txt .
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir -r requirements.txt
+# Manually install Flask (since it wasn't in the original requirements)
+RUN pip install flask
 
-# Install dependencies
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+# 4. Copy *only* our source code into the container
+# This copies train.py, predict.py, model.py, etc. and the __init__.py
+COPY src /app/src
 
-# Copy all application code to container
-COPY . .
+# 5. Expose the port our web app runs on (from src/predict.py)
+EXPOSE 5000
 
-# Create models directory for storing trained models
-RUN mkdir -p models
-
-# Run Training
-CMD ["python", "src/train.py"]
+# This makes it a "runnable container that exposes the app port"
+CMD ["python", "src/predict.py"]
