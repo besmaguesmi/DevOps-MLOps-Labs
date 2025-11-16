@@ -1,5 +1,5 @@
 # This is the GitHub Actions workflow file for Task 5
-
+# It should be placed at: .github/workflows/ci.yml
 
 name: Python CI Pipeline
 
@@ -27,49 +27,46 @@ jobs:
 
     # 2. Install dependencies
     - name: Install dependencies
+      # This step now runs inside the correct folder
       run: |
         python -m pip install --upgrade pip
         pip install setuptools wheel
-        # Install from our requirements file
         pip install -r requirements.txt
-        # Install the tools for CI (flake8, pytest)
-        # and Flask, which we added manually
         pip install flake8 pytest flask
+      working-directory: session2/ml-app
 
     # 2. Run the linter
     - name: Lint with flake8
       run: |
-        # This will fail the build if there are any linting errors
-        # (which is good!)
         flake8 src tests --count --statistics
+      working-directory: session2/ml-app
 
     # 2. Run tests and produce test results/artifacts
     - name: Run tests with pytest
       run: |
-        # Create a directory for the test results
-        mkdir -p test-results
-        # Run pytest and output a JUnit XML report
-        pytest --junitxml=test-results/junit.xml
+        mkdir -p ../test-results
+        pytest --junitxml=../test-results/junit.xml
+      working-directory: session2/ml-app
 
     # 3. Use action to upload test results artifact
     - name: Upload test results
-      # 'if: always()' ensures this runs even if tests fail
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: pytest-results
-        path: test-results/junit.xml
+        path: test-results/junit.xml # Path is now at the root
 
     # 2. Build a Docker image
     - name: Build Docker image
       run: |
-        # This step assumes a 'Dockerfile' exists in the root
         docker build . --file Dockerfile --tag my-image:latest
+      working-directory: session2/ml-app
 
     # 2. Upload the image artifact
     - name: Save Docker image as a .tar file
       run: |
-        docker save --output app-image.tar my-image:latest
+        docker save --output ../app-image.tar my-image:latest
+      working-directory: session2/ml-app
         
     # 3. Use action to upload image artifact
     - name: Upload Docker image artifact
@@ -77,6 +74,3 @@ jobs:
       with:
         name: docker-image
         path: app-image.tar
-
-
-        
