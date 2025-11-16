@@ -1,0 +1,26 @@
+[flake8]
+# Ignorer ces erreurs spécifiques
+ignore = E203, E266, E501, W503, E402
+
+# Longueur maximale de ligne
+max-line-length = 100
+
+# Exclure ces dossiers
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    .pytest_cache,
+    build,
+    dist,
+    .eggs
+
+# Fichiers à analyser
+filename = *.py
+
+# Arrêter après le premier fichier avec erreur
+exit-zero = False
+
+# Afficher les statistiques
+statistics = True

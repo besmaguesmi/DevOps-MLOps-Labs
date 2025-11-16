@@ -55,7 +55,7 @@ def get_feature_names() -> List[str]:
     try:
         iris = load_iris()
         feature_names = iris.feature_names
-        print(f"Feature names: {feature_names}")
+        print(f"✅ Feature names: {feature_names}")
         return feature_names
     except Exception as e:
         print(f"Error getting feature names: {str(e)}")
