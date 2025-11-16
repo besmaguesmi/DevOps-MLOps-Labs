@@ -1,21 +1,19 @@
-# Use official Python runtime as base image
-FROM python:3.9-slim
+FROM python:3.11-slim
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy requirements
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 COPY requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Install dependencies
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
-
-# Copy all application code to container
 COPY . .
 
-# Create models directory for storing trained models
 RUN mkdir -p models
+VOLUME ["/app/models"]
 
-# Run Training
+# Optional: expose port if needed
+# EXPOSE 5000
+
 CMD ["python", "src/train.py"]

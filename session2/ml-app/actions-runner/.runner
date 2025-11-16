@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 2,
+  "agentName": "DESKTOP-BQQF89Q",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus13.actions.githubusercontent.com/pDQVm8mmkxesowLmSwdo4PUYsDe5lQmJ4dihXzGPNKEaEqkoDh/",
+  "gitHubUrl": "https://github.com/dhouaifisarra/DevOps-MLOps-Labs",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}
