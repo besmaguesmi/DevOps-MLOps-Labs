@@ -17,5 +17,5 @@ COPY . .
 # Create models directory for storing trained models
 RUN mkdir -p models
 
-# Run Training
+# Define training entry
 CMD ["python", "src/train.py"]

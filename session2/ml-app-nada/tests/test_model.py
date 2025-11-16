@@ -65,3 +65,41 @@ def test_data_loading():
     assert X_train.shape[1] == 4  # 4 features
     assert len(np.unique(y_train)) == 3  # 3 classes
     assert len(X_train) + len(X_test) == 150  # Total samples
+
+# ===== De nouveaux tests ont été ajoutés =====
+
+def test_invalid_predict_before_training():
+    """Test that prediction fails gracefully before training"""
+    classifier = IrisClassifier()
+    X_test = np.random.random((5, 4))  # Crée des données de test aléatoires
+    
+    # Should raise ValueError when predicting before training
+    with pytest.raises(ValueError, match="must be trained"):
+        classifier.predict(X_test)
+
+def test_model_consistency():
+    """Test that model gives consistent predictions for same input"""
+    X_train, X_test, y_train, y_test = load_iris_data()
+    classifier = IrisClassifier()
+    classifier.train(X_train, y_train)
+    
+    # Same input should give same predictions
+    sample = X_test[:1]  # Single sample
+    pred1 = classifier.predict(sample)
+    pred2 = classifier.predict(sample)
+    
+    assert np.array_equal(pred1, pred2)
+
+def test_data_quality():
+    """Test data quality checks"""
+    X_train, X_test, y_train, y_test = load_iris_data()
+    
+    # Check for NaN values
+    assert not np.isnan(X_train).any()
+    assert not np.isnan(X_test).any()
+    assert not np.isnan(y_train).any()
+    assert not np.isnan(y_test).any()
+    
+    # Check for infinite values
+    assert np.isfinite(X_train).all()
+    assert np.isfinite(X_test).all()
