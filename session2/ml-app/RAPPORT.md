@@ -17,7 +17,7 @@ After cloning the forked repository locally, I explored its directory structure 
 
 I confirmed that the project includes a requirements.txt file, which contains the necessary Python dependencies such as:
 
-scikit-learn, pandas, flask, pytest, joblib.
+scikit-learn, pandas, flake8, pytest, joblib.
 
 This ensures that the project environment can be correctly set up for development, testing, and CI/CD workflow automation.
 
@@ -29,7 +29,6 @@ This ensures that the project environment can be correctly set up for developmen
 source .venv/bin/activate this command is for Linux it provides me an error .
 ![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/error%201%20venv.PNG)
 The correct commande is \venv\Scripts\activate.
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/error%201%20venv.PNG)
 ![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/correction%20error%201%20venv.PNG)
 
 3. Installed all dependencies: pip install -r requirements.txt
@@ -140,6 +139,72 @@ After applying these fixes, I ran flake8 . a second time. The command returned n
 
 ![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/sol%20flake.PNG)
 
+### Task5:
+
+I implemented the Continuous Integration (CI) workflow using GitHub Actions.
+
+# Initial Setup and Challenges
+Upon examining the repository, I found an existing ci.yml file located at the root of the project. I chose to delete this pre-existing file to create my own workflow that specifically addresses all the requirements of this assignment.
+
+After creating my ci.yml file and performing git add, git commit, and git push, the initial workflow execution failed.
+
+![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task%205%20push.PNG)
+# Analysis of the First Failure: 
+
+The initial failure occurred because the ci.yml file I had first implemented was a multi-job pipeline (e.g., test, train-model, deploy-docs). This structure had a critical logical flaw: the test job was configured to run before the train-model job.
+
+My unit tests (pytest) are designed to verify the existence and integrity of the trained model file (models/iris_classifier.pkl). Since the train-model job (which creates this .pkl file) had not yet run, the pytest step in the test job failed, leading to an immediate termination of the entire workflow. The subsequent jobs (train-model, deploy-docs) were consequently canceled.
+
+An additional issue was that the ci.yml was initially placed incorrectly within a sub-directory (session2/ml-app/.github/workflows/ci.yml), which prevented GitHub Actions from even detecting it in the first place. I corrected this by moving .github/workflows/ci.yml to the repository root. 
+![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task%205%20workflow%20failed.png)
+
+
+
+# Solution and Successful Implementation:
+To resolve these issues and ensure a robust CI pipeline, I made the following critical changes:
+
+1. Corrected ci.yml Location: I ensured the .github/workflows/ci.yml file was located directly at the root of the repository.
+
+2. Single-Job Workflow: I restructured the ci.yml to use a single, comprehensive job named build-lint-test-and-dockerize. This simplifies the workflow and enforces a strict, sequential execution order.
+
+3. Defined Working Directory: Crucially, I added defaults.run.working-directory: ./session2/ml-app. This instructed GitHub Actions to execute all subsequent run commands from within the session2/ml-app subdirectory, where all the project files reside.
+
+4. Logical Step Ordering: The steps within this single job were ordered to ensure dependencies are met:
+
+Checkout Code & Setup Python.
+
+Install Dependencies.
+
+Lint with flake8: This step verifies code quality (Task 4).
+
+Run Training Script: This step executes python src/train.py to generate the iris_classifier.pkl model artifact before testing.
+
+Run Tests with Pytest: With the model now available, pytest executes successfully (Task 3).
+
+Build Docker Image: Finally, docker build verifies the containerization (Task 6).
+
+After committing and pushing these corrected changes, the workflow executed successfully on the second attempt.
+
+# Results from GitHub Actions
+The screenshot above demonstrates the successful completion of the build-lint-test-and-dockerize job. All steps, from setting up the environment to building the Docker image, completed with a green checkmark, indicating success.
+
+This validation confirms that:
+
+The project's dependencies are correctly handled.
+
+The code adheres to flake8 linting standards.
+
+The train.py script runs as expected, producing the model artifact.
+
+The unit tests (Task 3) pass, verifying the model and data loading.
+
+The Dockerfile is valid, and the application can be successfully containerized (Task 6).
+
+This comprehensive CI pipeline ensures that any new changes pushed to the main branch are automatically validated for quality, functionality, and deployability.
+
+
+![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task5%20workflow%20passe.PNG)
+
 
 ### Task 6: Containerise the app
 
@@ -171,8 +236,13 @@ The script was able to write its artifacts (the .pkl model and .png plots) to th
 
 This successful test proves that the application is fully self-contained, portable, and correctly containerized.
 
+Absolument \! L'erreur est que vous avez mis quatre ` ```` ` à la fin au lieu de trois, et la ligne `Classification Report` était sur une seule ligne.
+
+Voici la version corrigée que vous pouvez coller dans votre `REPORT.md` :
+
 Container Run Log:
 
+```
 Starting Iris Classifier Training...
 Loading Iris dataset...
 Successfully loaded Iris dataset
@@ -182,8 +252,23 @@ Successfully loaded Iris dataset
    Classes: [0 1 2]
 ...
 Model Accuracy: 0.9667
-Classification Report: precision recall f1-score support 0 1.00 1.00 1.00 10 1 1.00 0.90 0.95 10 2 0.91 1.00 0.95 10 ... Training completed successfully! Model saved to: models/iris_classifier.pkl Plots saved: confusion_matrix.png, feature_importance.png
 
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        10
+           1       1.00      0.90      0.95        10
+           2       0.91      1.00      0.95        10
+
+    accuracy                           0.97        30
+   macro avg       0.97      0.97      0.97        30
+weighted avg       0.97      0.97      0.97        30
+
+...
+Training completed successfully!
+Model saved to: models/iris_classifier.pkl
+Plots saved: confusion_matrix.png, feature_importance.png
+```
 ![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task%206%20run%20image.PNG)
 
 
