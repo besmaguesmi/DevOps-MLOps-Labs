@@ -3,12 +3,9 @@
 Prediction script for Iris classifier
 """
 
-import sys
-import os
-import numpy as np
-
 from model import IrisClassifier
 from data_loader import get_target_names
+
 
 def main():
     print("Iris Classifier Prediction")
@@ -40,11 +37,11 @@ def main():
         prediction = classifier.predict([features])[0]
         probability = classifier.model.predict_proba([features])[0]
 
-        print(f"\nExample {i}: {features}")
-        print(f"Prediction: {target_names[prediction]}")
+        print("\nExample {i}: {features}")
+        print("Prediction: {target_names[prediction]}")
         print("Probabilities:")
         for j, prob in enumerate(probability):
-            print(f"  {target_names[j]}: {prob:.4f}")
+            print("  {target_names[j]}: {prob:.4f}")
 
 if __name__ == "__main__":
     main()

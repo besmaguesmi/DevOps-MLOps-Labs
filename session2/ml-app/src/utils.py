@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.datasets import load_iris
 from sklearn.metrics import confusion_matrix
 
+
 def plot_confusion_matrix(y_true, y_pred, target_names=None):
     """Plot confusion matrix"""
     if target_names is None:
@@ -22,6 +23,7 @@ def plot_confusion_matrix(y_true, y_pred, target_names=None):
     plt.savefig('confusion_matrix.png')
     plt.close()
 
+
 def plot_feature_importance(model, feature_names):
     """Plot feature importance for logistic regression"""
     importance = model.coef_[0]
@@ -37,3 +39,4 @@ def plot_feature_importance(model, feature_names):
     plt.tight_layout()
     plt.savefig('feature_importance.png')
     plt.close()
+
