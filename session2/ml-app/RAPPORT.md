@@ -8,7 +8,7 @@ This completes the forking step.
 
 **Screenshots:**  
 ![alt text](./images/fork.PNG)  
-![alt text](./images/fork 2.PNG)
+![alt text](./images/fork2.PNG)
 
 ---
 
