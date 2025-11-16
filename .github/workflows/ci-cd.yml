@@ -1,88 +1,54 @@
-name: CI/CD Pipeline
+name: Python CI Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
-  test:
+  build-lint-test-and-dockerize:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10"]
+
+    # Indique à GitHub de travailler dans votre dossier
+    defaults:
+      run:
+        working-directory: ./session2/ml-app
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      # 1. Récupérer le code
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+      # 2. Installer Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        cd session2/ml-app
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      # 3. Installer les dépendances
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run tests with pytest
-      run: |
-        cd session2/ml-app
-        python -m pytest tests/ -v
+      # 4. Lancer le Linter (Tâche 4)
+      - name: Lint with flake8
+        run: |
+          flake8 .
 
-  train-model:
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.ref == 'refs/heads/main'
+      # 5. Lancer l'entraînement (pour créer le modèle .pkl)
+      - name: Run training script
+        run: |
+          python src/train.py
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      # 6. Lancer les Tests (Tâche 3)
+      # (Maintenant que le .pkl existe, les tests vont passer)
+      - name: Run tests with pytest
+        run: |
+          pytest
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    - name: Install dependencies
-      run: |
-        cd session2/ml-app
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Train model
-      run: |
-        cd session2/ml-app
-        python src/train.py
-
-    - name: Upload trained model
-      uses: actions/upload-artifact@v4
-      with:
-        name: trained-model
-        path: session2/ml-app/models/
-        retention-days: 7
-
-    - name: Upload evaluation plots
-      uses: actions/upload-artifact@v4
-      with:
-        name: evaluation-plots
-        path: session2/ml-app/*.png
-        retention-days: 7
-
-  deploy-docs:
-    runs-on: ubuntu-latest
-    needs: train-model
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Deploy documentation
-      run: |
-        echo "Documentation would be deployed here"
-        echo "ML App is located in: session2/ml-app/"
-        echo "Project structure is ready for deployment"
+      # 7. Construire l'image Docker (Tâche 6)
+      - name: Build Docker image
+        run: |
+          docker build . --file Dockerfile --tag my-image:latest
