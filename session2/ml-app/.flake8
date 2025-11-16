@@ -1,0 +1,16 @@
+[flake8]
+# Ignore some errors (E501: line too long, W503: line break before binary operator)
+ignore = E501, W503
+
+# Set max line length
+max-line-length = 88
+
+# Exclude files and directories
+exclude =
+    .git,
+    __pycache__,
+    build,
+    dist,
+    venv,
+    .venv,
+    env

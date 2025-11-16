@@ -6,7 +6,8 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import numpy as np
-from typing import Tuple, List, Optional
+from typing import Tuple, List
+
 
 def load_iris_data(test_size: float = 0.2, random_state: int = 42) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
@@ -33,7 +34,7 @@ def load_iris_data(test_size: float = 0.2, random_state: int = 42) -> Tuple[np.n
             stratify=y  # Maintain class distribution in splits
         )
 
-        print(f"Successfully loaded Iris dataset")
+        print("Successfully loaded Iris dataset")
         print(f"   Features: {X.shape[1]}, Samples: {X.shape[0]}")
         print(f"   Training set: {X_train.shape[0]} samples")
         print(f"   Test set: {X_test.shape[0]} samples")
@@ -44,6 +45,7 @@ def load_iris_data(test_size: float = 0.2, random_state: int = 42) -> Tuple[np.n
     except Exception as e:
         print(f"Error loading Iris dataset: {str(e)}")
         raise
+
 
 def get_feature_names() -> List[str]:
     """
@@ -61,6 +63,7 @@ def get_feature_names() -> List[str]:
         print(f"Error getting feature names: {str(e)}")
         raise
 
+
 def get_target_names() -> List[str]:
     """
     Return target names for the Iris dataset
@@ -76,6 +79,7 @@ def get_target_names() -> List[str]:
     except Exception as e:
         print(f"Error getting target names: {str(e)}")
         raise
+
 
 def load_iris_as_dataframe() -> pd.DataFrame:
     """
@@ -96,6 +100,7 @@ def load_iris_as_dataframe() -> pd.DataFrame:
     except Exception as e:
         print(f"Error loading DataFrame: {str(e)}")
         raise
+
 
 def get_dataset_info() -> dict:
     """
@@ -128,10 +133,10 @@ def get_dataset_info() -> dict:
         print(f"Error getting dataset info: {str(e)}")
         raise
 
+
 # Example usage and testing
 if __name__ == "__main__":
     print("Testing data_loader module...")
-
     # Test loading data
     X_train, X_test, y_train, y_test = load_iris_data()
 
@@ -145,5 +150,4 @@ if __name__ == "__main__":
 
     # Test dataset info
     info = get_dataset_info()
-
     print("All data_loader tests passed!")
