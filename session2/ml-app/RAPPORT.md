@@ -136,9 +136,11 @@ Build a Docker image: Runs docker build . --file Dockerfile ... to build the ima
 
 Upload the image artifact: Saves the built image as app-image.tar and uploads it as a build artifact.
 
+![alt text](<Capture d'écran 2025-11-15 213829.png>)
+
 This workflow fully automates the project's quality checks. After pushing all my code, the pipeline ran and succeeded.
 
-Successful GitHub Actions Pipeline : ![alt text](<Capture d'écran 2025-11-15 213829.png>)
+Successful GitHub Actions Pipeline : ![alt text](<Capture d'écran 2025-11-16 144040.png>)
 
 ## Task 6: Containerise the app
 
