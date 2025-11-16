@@ -4,11 +4,14 @@ Data loader module for Iris dataset
 
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-import pandas as pd
-import numpy as np
-from typing import Tuple, List, Optional
 
-def load_iris_data(test_size: float = 0.2, random_state: int = 42) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+import numpy as np
+from typing import Tuple, List
+
+
+def load_iris_data(
+    test_size: float = 0.2, random_state: int = 42
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Load and split the Iris dataset
 
@@ -33,7 +36,7 @@ def load_iris_data(test_size: float = 0.2, random_state: int = 42) -> Tuple[np.n
             stratify=y  # Maintain class distribution in splits
         )
 
-        print(f"Successfully loaded Iris dataset")
+        print("Successfully loaded Iris dataset")
         print(f"   Features: {X.shape[1]}, Samples: {X.shape[0]}")
         print(f"   Training set: {X_train.shape[0]} samples")
         print(f"   Test set: {X_test.shape[0]} samples")
@@ -42,60 +45,41 @@ def load_iris_data(test_size: float = 0.2, random_state: int = 42) -> Tuple[np.n
         return X_train, X_test, y_train, y_test
 
     except Exception as e:
-        print(f"Error loading Iris dataset: {str(e)}")
+        print(f"Error loading data: {str(e)}")
         raise
+
 
 def get_feature_names() -> List[str]:
     """
-    Return feature names for the Iris dataset
+    Get the list of feature names from the Iris dataset
 
     Returns:
-        list: Feature names as strings
+        list: Feature names
     """
     try:
         iris = load_iris()
-        feature_names = iris.feature_names
-        print(f"Feature names: {feature_names}")
-        return feature_names
+        return iris.feature_names
+
     except Exception as e:
         print(f"Error getting feature names: {str(e)}")
         raise
 
-def get_target_names() -> List[str]:
+
+def get_target_names() -> np.ndarray:
     """
-    Return target names for the Iris dataset
+    Get the array of target class names
 
     Returns:
-        list: Target class names as strings
+        np.ndarray: Target class names
     """
     try:
         iris = load_iris()
-        target_names = iris.target_names
-        print(f"Target names: {list(target_names)}")
-        return target_names
+        return iris.target_names
+
     except Exception as e:
         print(f"Error getting target names: {str(e)}")
         raise
 
-def load_iris_as_dataframe() -> pd.DataFrame:
-    """
-    Load Iris dataset as a pandas DataFrame for exploration
-
-    Returns:
-        pd.DataFrame: Iris dataset with features and target
-    """
-    try:
-        iris = load_iris()
-        df = pd.DataFrame(iris.data, columns=iris.feature_names)
-        df['target'] = iris.target
-        df['species'] = df['target'].apply(lambda x: iris.target_names[x])
-
-        print(f"Loaded Iris dataset as DataFrame with {len(df)} rows")
-        return df
-
-    except Exception as e:
-        print(f"Error loading DataFrame: {str(e)}")
-        raise
 
 def get_dataset_info() -> dict:
     """
@@ -128,6 +112,7 @@ def get_dataset_info() -> dict:
         print(f"Error getting dataset info: {str(e)}")
         raise
 
+
 # Example usage and testing
 if __name__ == "__main__":
     print("Testing data_loader module...")
@@ -138,12 +123,10 @@ if __name__ == "__main__":
     # Test getting names
     features = get_feature_names()
     targets = get_target_names()
+    print(f"\nFeatures: {features}")
+    print(f"Targets: {targets}")
 
-    # Test DataFrame loading
-    df = load_iris_as_dataframe()
-    print(f"DataFrame columns: {df.columns.tolist()}")
+    # Test getting info
+    get_dataset_info()
 
-    # Test dataset info
-    info = get_dataset_info()
-
-    print("All data_loader tests passed!")
+    
