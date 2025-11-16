@@ -7,8 +7,8 @@ This completes the forking step.
 
 Screenshot:
 (see image below)
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/fork.PNG)
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/fork2.PNG)
+![alt text](./images/fork.PNG)
+![alt text](./images/fork2.PNG)
 
 
 2. Inspect the Repository
@@ -23,13 +23,13 @@ This ensures that the project environment can be correctly set up for developmen
 
 ### Task 2: Run the app locally
 1. Cloned the forked repository to my local machine. 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/git%20clone%20repo.PNG)
+![alt text](./images/git%20clone%20repo.PNG)
 
 2. Created a Python virtual environment: python -m venv venv
 source .venv/bin/activate this command is for Linux it provides me an error .
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/error%201%20venv.PNG)
+![alt text](./images/error%201%20venv.PNG)
 The correct commande is \venv\Scripts\activate.
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/correction%20error%201%20venv.PNG)
+![alt text](./images/correction%20error%201%20venv.PNG)
 
 3. Installed all dependencies: pip install -r requirements.txt
 
@@ -42,8 +42,8 @@ Analysis: This error occurred because pip could not find a pre-compiled binary (
 
 As a result, pip attempted to build the package from the source (.tar.gz), which requires the Microsoft C++ Build Tools, and those were not installed.
 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/error%202%20install%20requirement%201.PNG)
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/error%20requirement%202.PNG)
+![alt text](./images/error%202%20install%20requirement%201.PNG)
+![alt text](./images/error%20requirement%202.PNG)
 
 
 Resolution:
@@ -64,7 +64,7 @@ I took the following steps to resolve this:
 
 This time, pip successfully found the correct pre-compiled wheel for scikit-learn==1.3.0 and Python 3.10, and the installation completed without errors.
 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/sol%20requirments.PNG)
+![alt text](./images/sol%20requirments.PNG)
 
 4. Ran the model training script: python src/train.py
 The training script ran successfully. It loaded the Iris dataset (150 samples), split it into a 120-sample training set and a 30-sample test set.
@@ -75,7 +75,7 @@ The detailed report shows the model is highly effective, making only one error: 
 
 Finally, the script correctly saved the trained model (iris_classifier.pkl) and the evaluation plots (confusion_matrix.png, feature_importance.png).
 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/run%20train.PNG)
+![alt text](./images/run%20train.PNG)
 
 ### Task3 :
 
@@ -102,7 +102,7 @@ tests\test_model.py ... [100%]
 
 ========================== 3 passed in 1.31s ==========================
 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/test.PNG)
+![alt text](./images/test.PNG)
 
 ### Task4: 
 I integrated flake8 to enforce code quality, as specified in the requirements.txt.
@@ -122,7 +122,7 @@ F541: f-string is missing placeholders: An f-string was used in data_loader.py w
 
 W291 / W292: Whitespace Errors: The test_model.py file had trailing whitespace on one line and was missing the final newline character.
 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/flake8.PNG)
+![alt text](./images/flake8.PNG)
 
 # Resolution
 I opened each file identified by flake8 and manually corrected all the reported issues.
@@ -137,7 +137,7 @@ I fixed all trailing and missing whitespace.
 
 After applying these fixes, I ran flake8 . a second time. The command returned no output, confirming that the entire codebase is now compliant with the flake8 rules.
 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/sol%20flake.PNG)
+![alt text](./images/sol%20flake.PNG)
 
 ### Task5:
 
@@ -148,7 +148,7 @@ Upon examining the repository, I found an existing ci.yml file located at the ro
 
 After creating my ci.yml file and performing git add, git commit, and git push, the initial workflow execution failed.
 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task%205%20push.PNG)
+![alt text](./images/task%205%20push.PNG)
 # Analysis of the First Failure: 
 
 The initial failure occurred because the ci.yml file I had first implemented was a multi-job pipeline (e.g., test, train-model, deploy-docs). This structure had a critical logical flaw: the test job was configured to run before the train-model job.
@@ -156,7 +156,7 @@ The initial failure occurred because the ci.yml file I had first implemented was
 My unit tests (pytest) are designed to verify the existence and integrity of the trained model file (models/iris_classifier.pkl). Since the train-model job (which creates this .pkl file) had not yet run, the pytest step in the test job failed, leading to an immediate termination of the entire workflow. The subsequent jobs (train-model, deploy-docs) were consequently canceled.
 
 An additional issue was that the ci.yml was initially placed incorrectly within a sub-directory (session2/ml-app/.github/workflows/ci.yml), which prevented GitHub Actions from even detecting it in the first place. I corrected this by moving .github/workflows/ci.yml to the repository root. 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task%205%20workflow%20failed.png)
+![alt text](./images/task%205%20workflow%20failed.png)
 
 
 
@@ -203,7 +203,7 @@ The Dockerfile is valid, and the application can be successfully containerized (
 This comprehensive CI pipeline ensures that any new changes pushed to the main branch are automatically validated for quality, functionality, and deployability.
 
 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task5%20workflow%20passe.PNG)
+![alt text](./images/task5%20workflow%20passe.PNG)
 
 
 ### Task 6: Containerise the app
@@ -215,8 +215,8 @@ To verify the Dockerfile and the container's integrity, I performed two steps lo
 
 1. Build the Image: The image was built successfully using the command docker build -t devops-ml-app .. The build process completed without errors and correctly tagged the image as devops-ml-app:latest.
 
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task%206%20build.PNG)
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task%206%20build1.PNG)
+![alt text](./images/task%206%20build.PNG)
+![alt text](./images/task%206%20build1.PNG)
 
 
 
@@ -269,7 +269,7 @@ Training completed successfully!
 Model saved to: models/iris_classifier.pkl
 Plots saved: confusion_matrix.png, feature_importance.png
 ```
-![alt text](/DevOps-MLOps-Labs/session2/ml-app/images/task%206%20run%20image.PNG)
+![alt text](./images/task%206%20run%20image.PNG)
 
 
 
