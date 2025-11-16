@@ -1,19 +1,22 @@
+# REPORT – DevOps ML Project
 
-# Task 1 — Prepare the ML Project
+### Task 1 — Prepare the ML Project
+1. **Fork the Repository**
 
-## 1. Fork the Repository
-
-I successfully forked the original repository **besmaguesmi/DevOps-MLOps-Labs** into my personal GitHub account under the name **Chamakh1/DevOps-MLOps-Labs**.  
+I successfully forked the original repository besmaguesmi/DevOps-MLOps-Labs into my personal GitHub account under the name Chamakh1/DevOps-MLOps-Labs.  
 This completes the forking step.
 
+**Screenshots:**  
 ![alt text](./images/fork.PNG)  
-![alt text](./images/fork%202.PNG)
+![alt text](./images/fork 2.PNG)
 
-## 2. Inspect the Repository
+---
+
+2. **Inspect the Repository**
 
 After cloning the forked repository locally, I explored its directory structure to verify that all required components were present.
 
-I confirmed that the project includes a **requirements.txt** file, which contains the necessary Python dependencies such as:
+I confirmed that the project includes a requirements.txt file, which contains the necessary Python dependencies such as:
 
 - scikit-learn  
 - pandas  
@@ -23,25 +26,29 @@ I confirmed that the project includes a **requirements.txt** file, which contain
 
 This ensures that the project environment can be correctly set up for development, testing, and CI/CD workflow automation.
 
-# Task 2 — Run the App Locally
+---
 
-## 1. Cloned the forked repository to my local machine. 
+### Task 2: Run the app locally
+
+1. **Cloned the forked repository to my local machine**
 
 ![alt text](./images/git%20clone%20repo.PNG)
 
-## 2. Create the virtual environment
+---
 
-I attempted to activate a virtual environment using the Linux command:
+2. **Created a Python virtual environment**
+
+Command attempted:
 
 ```
 source .venv/bin/activate
 ```
 
-This resulted in an error on Windows:
+This command is for Linux and caused an error on Windows:
 
 ![alt text](./images/error%201%20venv.PNG)
 
-The correct Windows command is:
+Correct Windows command:
 
 ```
 .env\Scriptsctivate
@@ -49,54 +56,98 @@ The correct Windows command is:
 
 ![alt text](./images/correction%20error%201%20venv.PNG)
 
-## 3. Install all dependencies
+---
 
-`pip install -r requirements.txt`
+3. **Installed all dependencies**  
+Command: `pip install -r requirements.txt`
 
-## Addendum: Resolving Local Environment Build Error
+---
 
-During installation, I encountered the following error:
+### **Addendum: Resolving Local Environment Build Error**
 
-**DistutilsPlatformError: Microsoft Visual C++ 14.0 or greater is required**
+While executing Task 2 (`pip install -r requirements.txt`), I encountered a significant build error:
 
-This occurred because scikit-learn==1.3.0 does not provide a wheel for Python 3.12, so pip attempted to build from source.
+```
+DistutilsPlatformError: Microsoft Visual C++ 14.0 or greater is required.
+```
+
+**Analysis:**  
+This error occurred because pip could not find a pre-compiled binary (.whl) for `scikit-learn==1.3.0` compatible with Python 3.12.  
+It therefore attempted to build from source, which requires Microsoft C++ Build Tools.
 
 ![alt text](./images/error%202%20install%20requirement%201.PNG)  
 ![alt text](./images/error%20requirement%202.PNG)
 
-### Resolution
+---
 
-To fix this issue and follow DevOps best practices, I aligned my local environment with the CI environment (Python 3.10):
+### **Resolution**
 
-1. Installed Python 3.10  
-2. Deleted the non-functional `.venv`  
-3. Created a fresh virtual environment using Python 3.10  
-4. Activated the environment  
-5. Reinstalled the dependencies  
+To fix this and follow DevOps best practices (align local and CI environments):
+
+1. Installed **Python 3.10**  
+2. Deleted the previous, broken `.venv`  
+3. Created a new virtual environment using Python 3.10:  
+   ```
+   python -m venv .venv
+   ```
+4. Activated it:
+   ```
+   .\.venv\Scriptsctivate
+   ```
+5. Reinstalled dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
+Installation completed successfully:
 
 ![alt text](./images/sol%20requirments.PNG)
 
-## 4. Run the training script
+---
 
-`python src/train.py`
+4. **Ran the model training script**
 
-The model trained successfully with **96.7% accuracy**, saved its artifacts, and generated plots.
+Command:
+```
+python src/train.py
+```
+
+The script successfully:
+
+- Loaded the Iris dataset  
+- Trained a Logistic Regression model  
+- Achieved **96.7% accuracy**  
+- Saved:
+  - `iris_classifier.pkl`
+  - `confusion_matrix.png`
+  - `feature_importance.png`
 
 ![alt text](./images/run%20train.PNG)
 
-# Task 3 — Unit Testing
+---
 
-I discovered a pre-existing `tests/` directory in the project. To ensure a clean implementation, I deleted this old folder and created a new `tests/test_model.py` file.
+### Task 3: Unit Testing
 
-I wrote **three unit tests** using pytest:
+I discovered a pre-existing `tests/` directory.  
+To ensure a clean implementation, I deleted it and created a new `tests/test_model.py` from scratch.
 
-1. `test_model_file_exists` – verifies the artifact `iris_classifier.pkl` is generated  
-2. `test_model_loading_and_type` – checks model integrity using joblib  
-3. `test_data_loading` – validates data shape from `load_iris()`  
+I wrote **three pytest unit tests**:
 
-### Test Execution Results
+1. **test_model_file_exists**  
+   - Confirms that `train.py` successfully generates `models/iris_classifier.pkl`.
 
-All tests passed successfully.
+2. **test_model_loading_and_type**  
+   - Loads the saved model with joblib  
+   - Checks attributes `.predict()` and `.coef_`
+
+3. **test_data_loading**  
+   - Verifies dataset shapes:  
+     - data: (150, 4)  
+     - target: (150,)
+
+---
+
+### **Test Execution Results**
 
 ```
 ========================= test session starts =========================
@@ -109,71 +160,137 @@ tests	est_model.py ... [100%]
 
 ![alt text](./images/test.PNG)
 
-# Task 4 — Linting and Formatting
+---
 
-I integrated flake8 for code quality.
+### Task 4: Linting & Formatting
 
-1. Created a `.flake8` configuration  
-2. Ran `flake8 .`  
-3. Fixed all reported issues  
+I integrated **flake8** to enforce code quality.
 
-### Linting Issues Found
+1. Created `.flake8` config  
+2. Ran:
+   ```
+   flake8 .
+   ```
+3. Many violations were found:
 
-- F401 unused imports  
-- E302 / E305 wrong spacing  
-- F541 f-string without placeholders  
-- W291/W292 whitespace errors  
+---
+
+### **Analysis of Linting Errors**
+
+- **F401** unused imports  
+- **E302/E305** spacing issues  
+- **F541** f-string without placeholders  
+- **W291/W292** whitespace issues  
 
 ![alt text](./images/flake8.PNG)
 
-### After Fixing
+---
 
-`flake8 .` returned no errors.
+### **Resolution**
+
+I manually corrected all issues:
+
+- Removed unused imports  
+- Added spacing between functions  
+- Fixed f-string misuse  
+- Removed trailing whitespace  
+
+A second run showed **0 errors**:
 
 ![alt text](./images/sol%20flake.PNG)
 
-# Task 5 — GitHub Actions CI Workflow
+---
 
-I implemented the CI workflow using GitHub Actions.
+### Task 5: GitHub Actions CI Workflow
 
-### Initial Issues
+I implemented the CI pipeline using GitHub Actions.
 
-- There was an old `ci.yml` at the wrong location  
-- My first workflow had multiple jobs and incorrect job order  
-- Tests failed because the model had not been generated yet  
+---
 
-![alt text](./images/task%205%20push.PNG)  
+### **Initial Setup and Challenges**
+
+I found an existing `ci.yml` at the root, deleted it, and created a new workflow.
+
+After pushing, the workflow failed:
+
+![alt text](./images/task%205%20push.PNG)
+
+---
+
+### **Analysis of the First Failure**
+
+The failure occurred because:
+
+1. My initial workflow was **multi-job** (test, train-model, deploy-docs)  
+2. Tests ran **before** the model was trained  
+3. The workflow file was placed at:
+   ```
+   session2/ml-app/.github/workflows/ci.yml
+   ```
+   so GitHub Actions did not detect it.
+
 ![alt text](./images/task%205%20workflow%20failed.png)
 
-## Final Solution
+---
 
-I applied several fixes:
+### **Solution and Successful Implementation**
 
-1. Corrected workflow file location  
-2. Rebuilt the workflow as a **single job**  
-3. Set working directory to `session2/ml-app`  
-4. Ordered steps correctly (lint → train → test → docker build)  
+Key fixes:
 
-After pushing updates, the workflow executed successfully.
+1. Moved workflow to:
+   ```
+   .github/workflows/ci.yml
+   ```
+2. Created a **single job** workflow:  
+   `build-lint-test-and-dockerize`
+3. Added:  
+   ```
+   defaults.run.working-directory: ./session2/ml-app
+   ```
+4. Step order:
+   1. Checkout  
+   2. Setup Python  
+   3. Install dependencies  
+   4. Lint with flake8  
+   5. Run training script  
+   6. Run tests  
+   7. Build Docker image  
+
+After pushing, the workflow passed:
 
 ![alt text](./images/task5%20workflow%20passe.PNG)
 
-# Task 6 — Containerise the App
+---
 
-I created a Dockerfile based on `python:3.10-slim`.
+### Task 6: Containerise the App
 
-## 1. Build the image
+I created a Dockerfile based on **python:3.10-slim**.
 
-`docker build -t devops-ml-app .`
+---
+
+### **1. Build the Image**
+
+Command:
+
+```
+docker build -t devops-ml-app .
+```
 
 ![alt text](./images/task%206%20build.PNG)  
 ![alt text](./images/task%206%20build1.PNG)
 
-## 2. Run the container
+---
 
-`docker run devops-ml-app`
+### **2. Run the Container**
 
-### Container Run Log:
+Command:
+
+```
+docker run devops-ml-app
+```
+
+The container executed the training script successfully.  
+Output:
 
 ```
 Starting Iris Classifier Training...
@@ -204,3 +321,5 @@ Plots saved: confusion_matrix.png, feature_importance.png
 ```
 
 ![alt text](./images/task%206%20run%20image.PNG)
+
+---
