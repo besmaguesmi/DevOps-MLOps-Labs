@@ -3,6 +3,7 @@ Unit tests for model.py
 Tests model training and prediction functionality
 """
 
+
 import pytest
 import numpy as np
 from src.data_loader import load_iris_data
@@ -32,7 +33,8 @@ class TestIrisClassifier:
         self.classifier.train(self.X_train, self.y_train)
         predictions = self.classifier.predict(self.X_test[:5])
         assert len(predictions) == 5
-        assert all(isinstance(pred, (np.int32, np.int64, int)) for pred in predictions)
+        assert all(isinstance(pred, (np.int32, np.int64, int))
+                   for pred in predictions)
 
     def test_model_evaluation(self):
         """Test model evaluation functionality"""
