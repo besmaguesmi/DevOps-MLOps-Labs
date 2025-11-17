@@ -1,0 +1,7 @@
+[flake8]
+max-line-length = 88
+exclude =
+    .venv,
+    __pycache__,
+    src/__init__.py,
+    tests/__init__.py

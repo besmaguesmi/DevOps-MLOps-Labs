@@ -1,16 +1,16 @@
 import sys
 import os
+import numpy as np
+from data_loader import load_iris_data
+from model import IrisClassifier
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-import pytest
-import numpy as np
-from src.data_loader import load_iris_data
-from src.model import IrisClassifier
 
 class TestIrisClassifier:
     def setup_method(self):
         """Setup method that runs before each test"""
-        self.X_train, self.X_test, self.y_train, self.y_test = load_iris_data(test_size=0.3, random_state=42)
+        self.X_train, self.X_test, self.y_train, self.y_test = load_iris_data(
+            test_size=0.3, random_state=42)
         self.classifier = IrisClassifier()
 
     def test_model_initialization(self):
@@ -28,7 +28,8 @@ class TestIrisClassifier:
         self.classifier.train(self.X_train, self.y_train)
         predictions = self.classifier.predict(self.X_test[:5])
         assert len(predictions) == 5
-        assert all(isinstance(pred, (np.int32, np.int64, int)) for pred in predictions)
+        assert all(isinstance(pred, (np.int32, np.int64,
+                                     int)) for pred in predictions)
 
     def test_model_evaluation(self):
         """Test model evaluation functionality"""
@@ -57,6 +58,7 @@ class TestIrisClassifier:
         original_pred = self.classifier.predict(self.X_test[:5])
         loaded_pred = new_classifier.predict(self.X_test[:5])
         assert np.array_equal(original_pred, loaded_pred)
+
 
 def test_data_loading():
     """Test data loading functionality"""
