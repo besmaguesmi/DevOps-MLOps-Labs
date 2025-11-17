@@ -1,3 +1,31 @@
+<h2>Task 1: Fork the repo</h2>
+Description of what I did:
+
+I forked the original instructor's repository to my own GitHub account. This creates a personal copy of the project under my account, allowing me to make changes, push code, and set up my own `GitHub Actions` workflow without affecting the original project.
+
+Proof of execution:
+<img src="../screenshot_verification/fork.png">
+<img src="../screenshot_verification/fork_2.png">
+
+<h2>Task 2: Setup virtual environment & install packages</h2>
+Description of what I did:
+
+1. **Cloned the repo**: I cloned my forked repository to my local machine using `git clone https://github.com/MiiN1136/DevOps-MLOps-Labs-Session2.git`.
+
+2. **Created virtual environment**: I navigated into the project's `session2/ml-app` directory. I then created a local virtual environment named `venv` by running `python -m venv venv`. This isolates the project's dependencies.
+
+3. **Activated environment**: I activated the virtual environment using using powershell, via `.\venv\Scripts\activate` on Windows.
+
+4. **Installed dependencies**: I installed all the required packages for the project using `pip install -r requirements.txt`.
+
+5. **Verified setup**: Finally, I ran the training script with `python src/train.py` to confirm that the environment was set up correctly and the script could run successfully.
+
+Proof of execution:
+1. Creating the virtual environment
+<img src="../screenshot_verification/venv.png">
+2. Running the `train.py` script locally
+<img src="../screenshot_verification/train_script.png">
+
 <h2>Task 3: Write unit tests</h2>
 Description of what I did:
 
@@ -48,8 +76,20 @@ Proof of execution:
 <h2>Task 6: Containerise the app</h2>
 Description of what I did:
 
-I created a `Dockerfile` in the project's root directory to containerize the application. The Dockerfile uses a `python:3.11-slim` base image, sets a working directory, copies and installs the requirements.txt, and then copies the src directory. Finally, it sets the default command (CMD) to `python src/train.py`, which runs the training script when the container starts.
+I created a `Dockerfile` in the project's root directory to containerize the application. The Dockerfile uses a `python:3.10-slim` base image, sets a working directory, copies and installs the requirements.txt, and then copies the src directory. Finally, it sets the default command (CMD) to `python src/train.py`, which runs the training script when the container starts.
 
 I verified this locally by first building the image using `docker build -t seance_2_mlapp` . and then running it with `docker run seance_2_mlapp`. The container ran successfully and produced the same output as running the script locally.
 
 Proof of execution:
+* Built `Dockerfile`
+<img src="../screenshot_verification/dockerfile_2.png">
+* Image added to docker desktop:
+<img src="../screenshot_verification/docker.png">
+* Testing docker image
+<img src='../screenshot_verification/run_docker.png'> 
+* Pulled most recent repo version
+<img src="../screenshot_verification/pulling_repo.png">
+* Push latest changes
+<img src="../screenshot_verification/push_changes.png">
+* Checking and verifying `Actions` tab on GitHub : 
+<img src="../screenshot_verification/successful_CI_CD.png">
