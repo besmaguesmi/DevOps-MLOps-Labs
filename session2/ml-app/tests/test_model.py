@@ -65,3 +65,32 @@ def test_data_loading():
     assert X_train.shape[1] == 4  # 4 features
     assert len(np.unique(y_train)) == 3  # 3 classes
     assert len(X_train) + len(X_test) == 150  # Total samples
+    
+    
+def test_data_split_sizes():
+    X_train, X_test, y_train, y_test = load_iris_data(test_size=0.25, random_state=0)
+
+    assert len(X_train) == 112   # 75% of 150
+    assert len(X_test) == 38     # 25% of 150
+    assert len(y_train) == 112
+    assert len(y_test) == 38
+
+def test_predict_before_training():
+    clf = IrisClassifier()
+
+    with pytest.raises(ValueError):
+        clf.predict(np.zeros((1, 4)))
+
+
+def test_reproducible_training():
+    X_train, X_test, y_train, y_test = load_iris_data(test_size=0.3, random_state=42)
+
+    clf1 = IrisClassifier()
+    clf1.train(X_train, y_train)
+    pred1 = clf1.predict(X_test)
+
+    clf2 = IrisClassifier()
+    clf2.train(X_train, y_train)
+    pred2 = clf2.predict(X_test)
+
+    assert np.array_equal(pred1, pred2)
